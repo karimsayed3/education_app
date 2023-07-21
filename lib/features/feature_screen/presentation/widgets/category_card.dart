@@ -43,10 +43,11 @@ class CategoryCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Align(
-              alignment: Alignment.topRight,
+              alignment: Alignment.center,
               child: Image.network(
                 category.image!,
                 height: kCategoryCardImageSize,
+                fit: BoxFit.fill,
               ),
             ),
             const SizedBox(

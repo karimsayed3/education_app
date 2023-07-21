@@ -82,8 +82,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                 left: 0,
                                 child: CustomIconButton(
                                   child: const Icon(Icons.arrow_back),
-                                  height: 35,
-                                  width: 35,
+                                  height: 35.h,
+                                  width: 35.w,
                                   onTap: () => Navigator.pop(context),
                                 ),
                               ),
@@ -112,13 +112,15 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         CustomTabView(
                           index: _selectedTag,
                           changeTab: changeTab,
+                          length: lessons.data![0].lessons!.length - 1,
                         ),
                         _selectedTag == 0
                             ? PlayList(
                                 lessons: lessons.data![0].lessons!,
                               )
-                            : const Description(
-                                description: "",
+                            : Description(
+                                description:
+                                    lessons.data![0].description.toString(),
                               ),
                       ],
                     ),
@@ -131,17 +133,39 @@ class _DetailsScreenState extends State<DetailsScreen> {
             },
           ),
         ),
-        bottomSheet: BottomSheet(
-          onClosing: () {},
-          backgroundColor: Colors.white,
-          enableDrag: false,
-          builder: (context) {
-            return const SizedBox(
-              height: 60,
-              child: EnrollBottomSheet(),
-            );
-          },
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: 0,
+
+          items: [
+            BottomNavigationBarItem(
+              label: "add to favourite",
+              icon: Icon(
+                Icons.favorite,
+                color: Colors.pink,
+                size: 30,
+              ),
+            ),
+            BottomNavigationBarItem(
+              label: "add to my learnings",
+              icon: Icon(
+                Icons.favorite,
+                color: Colors.pink,
+                size: 30,
+              ),
+            ),
+          ],
         ),
+        // bottomSheet: BottomSheet(
+        //   onClosing: () {},
+        //   backgroundColor: Colors.white,
+        //   enableDrag: false,
+        //   builder: (context) {
+        //     return const SizedBox(
+        //       height: 60,
+        //       child: EnrollBottomSheet(),
+        //     );
+        //   },
+        // ),
       ),
     );
   }
@@ -164,9 +188,9 @@ class PlayList extends StatelessWidget {
         padding: EdgeInsets.only(top: 20.h, bottom: 40.h),
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
-        itemCount: lessons.length,
+        itemCount: lessons.length - 1,
         itemBuilder: (_, index) {
-          return LessonCard(lesson: lessons[index]);
+          return LessonCard(lesson: lessons[index + 1]);
         },
       ),
     );
@@ -192,18 +216,34 @@ class Description extends StatelessWidget {
 class CustomTabView extends StatefulWidget {
   final Function(int) changeTab;
   final int index;
+  final int length;
 
-  const CustomTabView({Key? key, required this.changeTab, required this.index})
+  const CustomTabView(
+      {Key? key,
+      required this.changeTab,
+      required this.index,
+      required this.length})
       : super(key: key);
 
   @override
-  State<CustomTabView> createState() => _CustomTabViewState();
+  State<CustomTabView> createState() => _CustomTabViewState(length);
 }
 
 class _CustomTabViewState extends State<CustomTabView> {
-  final List<String> _tags = ["Playlist (22)", "Description"];
+  List<String> _tags = [];
+  final int length;
+
+  _CustomTabViewState(this.length);
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _tags = ["Playlist (${length.toString()})", "Description"];
+  }
 
   Widget _buildTags(int index) {
+    print(widget.length);
     return GestureDetector(
       onTap: () {
         widget.changeTab(index);

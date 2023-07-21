@@ -30,31 +30,33 @@ class _FeatureScreenState extends State<FeatureScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          AppBar(),
-          BlocBuilder<FeatureCubit, FeatureState>(
-            builder: (context, state) {
-              return state.when(
-                idle: () {
-                  return Container();
-                },
-                loading: () {
-                  return Container();
-                },
-                success: (data) {
-                  print(data.message);
-                  return Body(
-                    homeData: data,
-                  );
-                },
-                error: (networkExceptions) {
-                  return Container();
-                },
-              );
-            },
-          )
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            AppBar(),
+            BlocBuilder<FeatureCubit, FeatureState>(
+              builder: (context, state) {
+                return state.when(
+                  idle: () {
+                    return Container();
+                  },
+                  loading: () {
+                    return Container();
+                  },
+                  success: (data) {
+                    print(data.message);
+                    return Body(
+                      homeData: data,
+                    );
+                  },
+                  error: (networkExceptions) {
+                    return Container();
+                  },
+                );
+              },
+            )
+          ],
+        ),
       ),
     );
   }
@@ -119,41 +121,40 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: EdgeInsets.only(
-            top: 10.h,
-            left: 20.w,
-            right: 20.w,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Explore Categories',
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              TextButton(
-                onPressed: () {},
-                child: Text(
-                  'See All',
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        color: kPrimaryColor,
-                      ),
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(
+              top: 10.h,
+              left: 20.w,
+              right: 20.w,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Explore Categories',
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
-              ),
-            ],
+                TextButton(
+                  onPressed: () {},
+                  child: Text(
+                    'See All',
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          color: kPrimaryColor,
+                        ),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-        Container(
-          height: 350.h,
-          child: GridView.builder(
+          GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              childAspectRatio: .77.h,
-              crossAxisSpacing: 20,
-              mainAxisSpacing: 24,
+              childAspectRatio: .75.h,
+              crossAxisSpacing: 20.h,
+              mainAxisSpacing: 30.w,
             ),
             itemCount: homeData.data!.length,
             padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
@@ -164,8 +165,8 @@ class Body extends StatelessWidget {
               );
             },
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

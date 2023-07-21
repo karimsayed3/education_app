@@ -76,12 +76,15 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
   void initState() {
     super.initState();
     String url = widget.url;
+    // controller.toggleFullScreenMode();
     controller = YoutubePlayerController(
         initialVideoId: YoutubePlayer.convertUrlToId(url)!,
         flags: const YoutubePlayerFlags(
           mute: false,
-          autoPlay: true,
+          autoPlay: false,
           disableDragSeek: false,
+          showLiveFullscreenButton: false,
+          // hideControls: true,
           loop: false,
           isLive: false,
           forceHD: false,
@@ -121,4 +124,5 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
       ],
     );
   }
+
 }
